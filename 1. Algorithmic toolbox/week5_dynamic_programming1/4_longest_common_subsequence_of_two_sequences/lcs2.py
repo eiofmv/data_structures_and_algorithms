@@ -1,22 +1,20 @@
 #Uses python3
 
-import sys
-
-def lcs2(a, b):
+def lcs2(s, t):
+    d = [[0] * (len(t) + 1)]
+    for i in range(1, len(s) + 1):
+        d.append([0] * (len(t) + 1))
+        for j in range(1, len(t) + 1):
+            d[i][j] = max(d[i-1][j], d[i][j-1], d[i-1][j-1] + int(s[i-1] == t[j-1]))
+    
     #write your code here
-    return min(len(a), len(b))
+    return d[-1][-1]
 
 if __name__ == '__main__':
-    input = sys.stdin.read()
-    data = list(map(int, input.split()))
+    n = int(input())
+    a = [int(i) for i in input().split()]
 
-    n = data[0]
-    data = data[1:]
-    a = data[:n]
-
-    data = data[n:]
-    m = data[0]
-    data = data[1:]
-    b = data[:m]
+    m = int(input())
+    b = [int(i) for i in input().split()]
 
     print(lcs2(a, b))

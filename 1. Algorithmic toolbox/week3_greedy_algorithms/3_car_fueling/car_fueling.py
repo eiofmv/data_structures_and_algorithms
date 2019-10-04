@@ -24,7 +24,3 @@ if __name__ == '__main__':
     n = int(input())
     stops = [int(i) for i in input().split(' ')]
     print(compute_min_refills(d, m, stops))
-
-5 4 3 -1 -2 -4
-
-5 4 3 2 1 -3

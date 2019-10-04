@@ -1,20 +1,27 @@
 # Uses python3
-from sys import stdin
 
-def fibonacci_sum_squares_naive(n):
-    if n <= 1:
-        return n
+def pisano_period(m):
+    current = 1
+    previous = 1
+    period = 1
+    while not (current == 1 and previous == 0):
+        previous, current = current, (current + previous) % m
+        period += 1
 
-    previous = 0
-    current  = 1
-    sum      = 1
+    return period
 
-    for _ in range(n - 1):
-        previous, current = current, previous + current
-        sum += current * current
+def fibonacci_sum_squares(n):
+    period = pisano_period(10)
+    sum_ = 0
+    current = 0
+    next = 1
 
-    return sum % 10
+    for i in range(n % period):
+        current, next = next, (current + next) % 10
+        sum_ += current * current
+        sum_ %= 10
+
+    return sum_
 
 if __name__ == '__main__':
-    n = int(stdin.read())
-    print(fibonacci_sum_squares_naive(n))
+    print(fibonacci_sum_squares(int(input())))
