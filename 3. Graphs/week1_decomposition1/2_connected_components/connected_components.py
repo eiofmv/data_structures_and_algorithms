@@ -2,10 +2,20 @@
 
 import sys
 
+def explore(x, adj, explored):
+    explored[x] = 1
+    for v in adj[x]:
+        if not explored[v]:
+            explore(v, adj, explored) 
+
 
 def number_of_components(adj):
     result = 0
-    #write your code here
+    explored = [0] * len(adj)
+    for v in range(len(adj)):
+        if not explored[v]:
+            result += 1
+            explore(v, adj, explored)
     return result
 
 if __name__ == '__main__':
