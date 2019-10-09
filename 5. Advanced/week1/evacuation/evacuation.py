@@ -76,7 +76,7 @@ def max_flow(graph, from_, to):
 
 
 def bfs(graph, from_, to):
-    X = -1  # float('inf')
+    X = -1  
     n = graph.size()
     dist = [-1] * n
     path = []
