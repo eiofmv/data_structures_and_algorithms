@@ -1,4 +1,7 @@
 # python3
+import queue
+
+
 class MaxMatching:
     def read_data(self):
         n, m = map(int, input().split())
@@ -16,6 +19,7 @@ class MaxMatching:
         m = len(adj_matrix[0])
         matching = [-1] * n
         busy_right = [False] * m
+
         for i in range(n):
             for j in range(m):
                 if adj_matrix[i][j] and matching[i] == -1 and (not busy_right[j]):
@@ -27,6 +31,7 @@ class MaxMatching:
         adj_matrix = self.read_data()
         matching = self.find_matching(adj_matrix)
         self.write_response(matching)
+
 
 if __name__ == '__main__':
     max_matching = MaxMatching()
