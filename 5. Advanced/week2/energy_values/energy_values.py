@@ -23,49 +23,59 @@ def ReadEquation():
         b.append(line[size])
     return Equation(a, b)
 
-def SelectPivotElement(a, used_rows, used_columns):
+def SelectPivotElement(a, step):
     # This algorithm selects the first free element.
     # You'll need to improve it to pass the problem.
-    pivot_element = Position(0, 0)
-    while used_rows[pivot_element.row]:
+    pivot_element = Position(step, step)
+    while not a[pivot_element.row][pivot_element.column]:
         pivot_element.row += 1
-    while used_columns[pivot_element.column]:
-        pivot_element.column += 1
     return pivot_element
 
-def SwapLines(a, b, used_rows, pivot_element):
+def SwapLines(a, b, pivot_element):
     a[pivot_element.column], a[pivot_element.row] = a[pivot_element.row], a[pivot_element.column]
     b[pivot_element.column], b[pivot_element.row] = b[pivot_element.row], b[pivot_element.column]
-    used_rows[pivot_element.column], used_rows[pivot_element.row] = used_rows[pivot_element.row], used_rows[pivot_element.column]
     pivot_element.row = pivot_element.column;
 
 def ProcessPivotElement(a, b, pivot_element):
     # Write your code here
-    pass
+    x = a[pivot_element.row][pivot_element.column]
+    for i in range(pivot_element.column, len(a[0])):
+        a[pivot_element.row][i] /= x
+    b[pivot_element.row] /= x
 
-def MarkPivotElementUsed(pivot_element, used_rows, used_columns):
-    used_rows[pivot_element.row] = True
-    used_columns[pivot_element.column] = True
+    for i in range(len(a)):
+        if i == pivot_element.row:
+            continue
+        dif = a[i][pivot_element.column]
+        for j in range(pivot_element.column, len(a[0])):
+            a[i][j] -= dif * a[pivot_element.row][j]
+        b[i] -= dif * b[pivot_element.row]
+
+# def MarkPivotElementUsed(pivot_element, used_rows, used_columns):
+#     used_rows[pivot_element.row] = True
+#     used_columns[pivot_element.column] = True
 
 def SolveEquation(equation):
     a = equation.a
     b = equation.b
     size = len(a)
 
-    used_columns = [False] * size
-    used_rows = [False] * size
+    # used_columns = [False] * size
+    # used_rows = [False] * size
     for step in range(size):
-        pivot_element = SelectPivotElement(a, used_rows, used_columns)
-        SwapLines(a, b, used_rows, pivot_element)
+        pivot_element = SelectPivotElement(a, step)
+        SwapLines(a, b, pivot_element)
         ProcessPivotElement(a, b, pivot_element)
-        MarkPivotElementUsed(pivot_element, used_rows, used_columns)
+        # MarkPivotElementUsed(pivot_element, used_rows, used_columns)
 
     return b
+
 
 def PrintColumn(column):
     size = len(column)
     for row in range(size):
         print("%.20lf" % column[row])
+
 
 if __name__ == "__main__":
     equation = ReadEquation()
